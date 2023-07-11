@@ -72,6 +72,16 @@ class ViewController: UIViewController {
         return button
     }()
     
+    let aboutButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Info", for: .normal)
+        button.configuration = .filled()
+        
+        button.tintColor = .systemMint
+        button.addTarget(self, action: #selector(aboutButtonTapped), for: .touchUpInside)
+        return button
+    }()
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -90,6 +100,7 @@ private extension ViewController {
         view.addSubview(nameLabel)
         view.addSubview(countLabel)
         view.addSubview(changeNameButton)
+        view.addSubview(aboutButton)
     }
     
     func makeConstraints() {
@@ -126,9 +137,14 @@ private extension ViewController {
         ])
 //        changeButton
         NSLayoutConstraint.activate([
+          
             changeNameButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 120),
             changeNameButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 120 )
            ])
+        NSLayoutConstraint.activate([
+            aboutButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            aboutButton.bottomAnchor.constraint(equalTo: resetButton.bottomAnchor, constant: 50)
+        ])
         
     }
     
@@ -159,12 +175,19 @@ private extension ViewController {
             textField.placeholder = "Название"
         }
             alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
-        let doneAction = UIAlertAction(title: "Готово", style: .default) { [weak self] (_) in
+        _ = UIAlertAction(title: "Готово", style: .default) { [weak self] (_) in
                 if let textField = alert.textFields?.first, let newName = textField.text{
                     self?.nameLabel.text = newName
                 }
             }
         }
+    @objc func aboutButtonTapped() {
+        let aboutMeText = "Autor aker_mazafaker123"
+        let alertController = UIAlertController(title: "About Me", message: aboutMeText, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alertController, animated: true, completion: nil)
+    }
+
     }
 
 
