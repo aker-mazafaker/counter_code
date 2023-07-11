@@ -28,6 +28,14 @@ class ViewController: UIViewController {
         return label
     }()
     
+    let changeNameButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "pencil.tip.crop.circle"), for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(changeName) , for: .touchUpInside)
+        return button
+    }()
+    
     
     let pluseButton: UIButton = {
         let button = UIButton()
@@ -61,10 +69,8 @@ class ViewController: UIViewController {
         button.configuration = .filled()
         button.addTarget(self, action: #selector(resetButtonTapped), for: .touchUpInside)
         button.tintColor = .systemPink
-        
         return button
     }()
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,6 +89,7 @@ private extension ViewController {
         view.addSubview(resetButton)
         view.addSubview(nameLabel)
         view.addSubview(countLabel)
+        view.addSubview(changeNameButton)
     }
     
     func makeConstraints() {
@@ -117,6 +124,11 @@ private extension ViewController {
             countLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             countLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 200)
         ])
+//        changeButton
+        NSLayoutConstraint.activate([
+            changeNameButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 120),
+            changeNameButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 120 )
+           ])
         
     }
     
@@ -140,7 +152,21 @@ private extension ViewController {
         count = 0
         countLabel.text = "\(count)"
     }
-}
+    
+    @objc func changeName() {
+        let alert = UIAlertController(title: "Counter", message: "What will we count?", preferredStyle: .alert)
+        alert.addTextField { textField in
+            textField.placeholder = "Название"
+        }
+            alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
+        let doneAction = UIAlertAction(title: "Готово", style: .default) { [weak self] (_) in
+                if let textField = alert.textFields?.first, let newName = textField.text{
+                    self?.nameLabel.text = newName
+                }
+            }
+        }
+    }
+
 
 
 
